@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ /*******************************************************************************
+  ~  * Copyright 2020 (C) N*able
+  ~  * @author Lahiru Sampath
+  ~  *******************************************************************************/
+  -->
+
+<!DOCTYPE xml>
+<configuration debug="true">
+
+    <property name="LOGS" value="/sl/shopingAS/"/>
+
+    <appender name="STDOUT"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd'T'HH:mm:ss.sss'Z'}] [%C] [%t] [%L] [%-5p]
+                %m%n
+            </pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <springProfile name="local">
+            <file>${LOGS}/CART.log</file>
+            <rollingPolicy
+                    class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- daily rollover -->
+                <fileNamePattern>${LOGS}/cartArchived/log_-%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+                <maxHistory>30</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <pattern>[%d{yyyy-MM-dd'T'HH:mm:ss.sss'Z'}] [%C] [%t] [%L] [%-5p]
+                    %m%n
+                </pattern>
+            </encoder>
+        </springProfile>
+        <springProfile name="dev">
+            <File>${LOGS}/CART.log</File>
+            <rollingPolicy
+                    class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- daily rollover -->
+                <fileNamePattern>
+                    ${LOGS}/cartArchived/log_-%d{yyyy-MM-dd-HH-mm}.log
+                </fileNamePattern>
+                <maxHistory>30</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <pattern>[%d{yyyy-MM-dd'T'HH:mm:ss.sss'Z'}] [%C] [%t] [%L] [%-5p]
+                    %m%n
+                </pattern>
+            </encoder>
+        </springProfile>
+        <springProfile name="prod">
+            <File>${LOGS}/CART.log</File>
+            <rollingPolicy
+                    class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- daily rollover -->
+                <fileNamePattern>
+                    ${LOGS}/cartArchived/log_%d{yyyy-MM-dd-HH-mm}.log
+                </fileNamePattern>
+                <maxHistory>30</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <pattern>[%d{yyyy-MM-dd'T'HH:mm:ss.sss'Z'}] [%C] [%t] [%L] [%-5p]
+                    %m%n
+                </pattern>
+            </encoder>
+        </springProfile>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

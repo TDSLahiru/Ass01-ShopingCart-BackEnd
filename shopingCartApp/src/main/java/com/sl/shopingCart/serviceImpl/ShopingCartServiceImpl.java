@@ -56,7 +56,7 @@ public class ShopingCartServiceImpl implements ShopingCartService{
 
 		if(qty<0) {
             logger.info("========== Quantity cant be a negative value in ShopingCartServiceImpl =========");
-			throw new AppException("Quantity cant be a negative value");
+			throw new ProductNotFoundException("Quantity cant be a negative value");
 			
 		}
 		Optional<Product> optionalProduct = productsRepository.findById(id);
@@ -85,7 +85,7 @@ private ProductPriceDetailsResponse cartonPriceCal(int qty,Product productDetail
 		Float cartonPrice = productDetails.getCartonPrice() * cartonSize;
 		Float unitsPrice = (productDetails.getCartonPrice() / productDetails.getCartonSize())*units*productDetails.getCartonPriceRatio();
 				
-		if (cartonSize>=3) {
+		if (cartonSize>=productDetails.getCartonLevel()) {
 			cartonPrice = (float) ((cartonPrice)*(1.0 - productDetails.getCartonDiscount()));
 		}
 		

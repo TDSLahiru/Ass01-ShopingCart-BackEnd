@@ -30,5 +30,7 @@ public class Product {
     private Float cartonPriceRatio;
     @Column(length = 20)
     private Float cartonDiscount;
+    @Column(length = 10)
+    private Integer cartonLevel;
 
 }

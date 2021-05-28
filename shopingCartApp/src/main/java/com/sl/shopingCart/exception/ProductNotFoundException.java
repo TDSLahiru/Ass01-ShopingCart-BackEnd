@@ -1,7 +1,7 @@
 package com.sl.shopingCart.exception;
 
 
-public class ProductNotFoundException extends AppException{
+public class ProductNotFoundException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
 

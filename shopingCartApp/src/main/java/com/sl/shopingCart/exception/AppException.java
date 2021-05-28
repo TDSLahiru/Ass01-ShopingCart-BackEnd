@@ -1,20 +1,25 @@
 package com.sl.shopingCart.exception;
 
-public class AppException extends RuntimeException{
-	private static final long serialVersionUID = 1L;
+import java.time.ZonedDateTime;
 
+import org.springframework.http.HttpStatus;
 
-    
-    public AppException() {
-		super();
-	}
+import lombok.Getter;
 
+@Getter
+public class AppException {
 	
-	public AppException( String message) {
-        super(message);
-    }
+	
+	private final String Message ;
+	private final HttpStatus httpStatus ;
+	private final ZonedDateTime timstamp ;
+	
 
-    public AppException( String message, Throwable e) {
-        super(message, e);
-    }
+	public AppException(String message, HttpStatus httpStatus, ZonedDateTime timstamp) {
+		super();
+		Message = message;
+		this.httpStatus = httpStatus;
+		this.timstamp = timstamp;
+	}
+   
 }

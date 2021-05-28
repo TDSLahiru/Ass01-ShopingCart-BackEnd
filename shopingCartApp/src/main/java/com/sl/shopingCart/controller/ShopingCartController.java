@@ -29,56 +29,52 @@ import io.swagger.annotations.ApiResponses;
 @CrossOrigin("*")
 public class ShopingCartController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Autowired
 	ShopingCartService productService;
-	
-	@GetMapping("/getAllProducts")
-    @ApiOperation(value = "Get all products", nickname = "getAllProducts")
-    @ApiResponses({@ApiResponse(code = 200, message = "Successful"),
-    @ApiResponse(code = 400, message = "Bad Request"),
-    @ApiResponse(code = 500, message = "Internal server error")})
-    public ResponseEntity<List<ProductDetailResponse>>  getAllProduct()  {
-     try {
-    	 logger.info("=========Start the query products details process in ShopingCartController==========");
-		return ResponseEntity.ok(productService.getAllProductsDetails());
-		
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		logger.error("=========Error ocurred when product details quering from the DB in ShopingCartController=========== : Error :",e.getMessage());
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 
+	@GetMapping("/getAllProducts")
+	@ApiOperation(value = "Get all products", nickname = "getAllProducts")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Successful"), @ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 500, message = "Internal server error") })
+	public ResponseEntity<List<ProductDetailResponse>> getAllProduct() {
+		try {
+			logger.info("=========Start the query products details process in ShopingCartController==========");
+			return ResponseEntity.ok(productService.getAllProductsDetails());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(
+					"=========Error ocurred when product details quering from the DB in ShopingCartController=========== : Error :",
+					e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+
+		}
 	}
-    }
-	
+
 	//////////////////////////////////////////////////////////
-	
-	 @GetMapping("/productPriceDetailsById/{id}")
-	    @ApiOperation(value = "Calculate product price By Id", nickname = "calculateProductPriceById")
-	    @ApiResponses({@ApiResponse(code = 200, message = "Successful"),
-	    @ApiResponse(code = 400, message = "Somthing went wrong the `product price calculation "),
-	    @ApiResponse(code = 500, message = "Internal server error")
-	    })
-	    public ResponseEntity<ProductPriceDetailsResponse> productPriceDetailsById(
-	            @PathVariable("id") Long id,
-	            @RequestParam(value = "qty", required = true)  int qty
-	    ) {
-	        try {
-	        	
-	       	     logger.info("========= Start the productPriceDetailsById process in ShopingCartController =========");
-	            return ResponseEntity.ok(productService.getCartonPriceDetails(qty, id));
-	        } catch (ProductNotFoundException e) {
-	          logger.info("=========== product Price Details not found in ShopingCartController============: Error :", e.getMessage());
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-	        } catch (AppException e) {
-	        	
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-			}
-	        catch (Exception e) {
-	          logger.error("============= Unknown error ocurred in product Price Details process in ShopingCartController==========: Error :", e.getMessage());
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-	        }
-	    }
-	
+
+	@GetMapping("/productPriceDetailsById/{id}")
+	@ApiOperation(value = "Calculate product price By Id", nickname = "calculateProductPriceById")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Successful"),
+			@ApiResponse(code = 400, message = "Somthing went wrong the `product price calculation "),
+			@ApiResponse(code = 500, message = "Internal server error") })
+	public ResponseEntity<ProductPriceDetailsResponse> productPriceDetailsById(@PathVariable("id") Long id,
+			@RequestParam(value = "qty", required = true) int qty) {
+		try {
+
+			logger.info("========= Start the productPriceDetailsById process in ShopingCartController =========");
+			return ResponseEntity.ok(productService.getCartonPriceDetails(qty, id));
+		} catch (ProductNotFoundException e) {
+			logger.info("=========== product Price Details not found in ShopingCartController============: Error :",
+					e.getMessage());
+			throw new ProductNotFoundException(e.getMessage());
+		} catch (Exception e) {
+			logger.error(
+					"============= Unknown error ocurred in product Price Details process in ShopingCartController==========: Error :",
+					e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
 }

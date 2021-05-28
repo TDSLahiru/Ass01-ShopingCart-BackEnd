@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableAutoConfiguration
 @SpringBootApplication
+
 public class ShopingCartAppApplication {
 
 	public static void main(String[] args) {
